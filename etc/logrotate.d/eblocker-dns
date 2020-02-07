@@ -1,0 +1,9 @@
+/opt/eblocker-dns/log/eblocker-dns.log {
+  copytruncate
+  compress
+  daily
+  maxsize 5M
+  missingok
+  notifempty
+  rotate 7
+}

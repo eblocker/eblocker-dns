@@ -1,0 +1,13 @@
+Source: eblocker-dns
+Section: contrib/net
+Priority: extra
+Maintainer: eBlocker Open Source UG <dev@eblocker.org>
+Build-Depends: ruby (>= 1:2.1), ruby-dev (>= 1:2.1), debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: https://github.com/eblocker/eblocker-dns
+
+Package: eblocker-dns
+Architecture: any
+Depends: ruby (>= 1:2.1), bundler, ${shlibs:Depends}
+Description: Networking tools
+
