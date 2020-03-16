@@ -24,10 +24,10 @@ if [ "$1" = configure ] ; then
     chown  eblocker-dns:eblocker-dns /opt/eblocker-dns/run
 
 # Install services:
-    update-rc.d eblocker-dns defaults
+    systemctl enable eblocker-dns
 
 # (Re)start services:
-    invoke-rc.d eblocker-dns restart
+    systemctl start eblocker-dns
 
 fi
 
