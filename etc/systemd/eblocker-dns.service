@@ -1,10 +1,9 @@
 [Unit]
 Description=eBlocker DNS server
-Before=multi-user.target
-Before=graphical.target
 After=network-online.target
 After=redis-server.service
 Wants=network-online.target
+Wants=redis-server.service
 
 [Service]
 Type=forking
@@ -16,3 +15,5 @@ Group=eblocker-dns
 WorkingDirectory=/opt/eblocker-dns
 LimitNOFILE=10000
 
+[Install]
+WantedBy=multi-user.target
