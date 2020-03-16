@@ -1,14 +1,14 @@
 DNS_HOME = $(DESTDIR)/opt/eblocker-dns
-INITD = $(DESTDIR)/etc/init.d
 LOGROTATED = $(DESTDIR)/etc/logrotate.d
 LIMITSD = $(DESTDIR)/etc/security/limits.d
+SYSTEMD = $(DESTDIR)/lib/systemd/system
 
 build:
 	bundle package --all
 
 install:
-	mkdir -p $(INITD)
-	cp etc/init.d/eblocker-dns $(INITD)
+	mkdir -p $(SYSTEMD)
+	cp etc/systemd/eblocker-dns.service $(SYSTEMD)
 	mkdir -p $(LIMITSD)
 	cp etc/security/limits.d/eblocker-dns.conf $(LIMITSD)
 	mkdir -p $(LOGROTATED)

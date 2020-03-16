@@ -17,7 +17,7 @@
 #
 
 if [ "$1" = remove ] ; then
-echo remove
-# Remove services
-    update-rc.d eblocker-dns remove
+    echo remove
+    # Remove services
+    systemctl disable eblocker-dns
 fi

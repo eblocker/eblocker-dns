@@ -17,8 +17,8 @@
 #
 
 if [ "$1" = remove ] ; then
-# Stop services:
-    invoke-rc.d eblocker-dns stop
+    # Stop services:
+    systemctl stop eblocker-dns
 fi
 
 exit 0
