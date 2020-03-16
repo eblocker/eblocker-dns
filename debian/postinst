@@ -27,7 +27,7 @@ if [ "$1" = configure ] ; then
     systemctl enable eblocker-dns
 
 # (Re)start services:
-    systemctl start eblocker-dns
+    systemctl restart eblocker-dns
 
 fi
 
