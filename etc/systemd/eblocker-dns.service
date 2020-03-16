@@ -1,0 +1,18 @@
+[Unit]
+Description=eBlocker DNS server
+Before=multi-user.target
+Before=graphical.target
+After=network-online.target
+After=redis-server.service
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/opt/eblocker-dns/run/eblocker-dns.pid
+ExecStart=/opt/eblocker-dns/bin/eblocker-dns start
+ExecStop=/opt/eblocker-dns/bin/eblocker-dns stop
+User=eblocker-dns
+Group=eblocker-dns
+WorkingDirectory=/opt/eblocker-dns
+LimitNOFILE=10000
+
