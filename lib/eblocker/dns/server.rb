@@ -114,7 +114,8 @@ module Eblocker::Dns
       end
 
       @logger.debug("resolving from local network peer #{peer}")
-      return @config.local_records[resource_class][name]
+      local_records = @config.local_records[resource_class]
+      return local_records ? local_records[name] : nil
     end
 
     def load_config
