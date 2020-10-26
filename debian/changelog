@@ -1,3 +1,9 @@
+eblocker-dns (2.4.1) unstable; urgency=medium
+
+  * Bugfix: eblocker-dns only resolves A, AAAA and PTR records
+
+ -- eBlocker Open Source UG <dev@eblocker.org>  Mon, 26 Oct 2020 15:39:00 +0100
+
 eblocker-dns (2.4.0) unstable; urgency=medium
 
   * Initial open source release
