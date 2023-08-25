@@ -1,3 +1,11 @@
+eblocker-dns (2.4.2) unstable; urgency=medium
+
+  * Bugfix: eblocker-dns used to return NXDOMAIN for AAAA requests
+    of blocked domains. Now an empty response is returned so the
+    clients don't assume the domain does not exist.
+
+ -- eBlocker Open Source UG <dev@eblocker.org>  Fri, 25 Aug 2023 15:22:00 +0100
+
 eblocker-dns (2.4.1) unstable; urgency=medium
 
   * Bugfix: eblocker-dns only resolves A, AAAA and PTR records
