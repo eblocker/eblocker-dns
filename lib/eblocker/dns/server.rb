@@ -276,6 +276,7 @@ module Eblocker::Dns
       @logger.warn("failed to publish stats #{e.message}")
     end
 
+    # Resolve queries from the Redis queue 'dns_query'
     def resolve(id, name_server, names)
       @logger.debug("resolve request #{id}: #{names} @ #{name_server}")
 
@@ -321,7 +322,11 @@ module Eblocker::Dns
     private
 
     def respond(transaction, resource_class, record, ttl)
-      transaction.respond!(record, { ttl: ttl})
+      if record
+        transaction.respond!(record, {ttl: ttl})
+      else
+        transaction.fail!(:NoError)
+      end
       if @config.name_server_name && @config.local_records[resource_class][@config.name_server_name]
         name = Resolv::DNS::Name.create @config.name_server_name
         ip = @config.local_records[resource_class][@config.name_server_name]
@@ -340,6 +345,7 @@ module Eblocker::Dns
       end
       if decision[0].is_a? String
         return respond(transaction, resource_class, decision[0], BLOCK_TTL) if resource_class == Resolv::DNS::Resource::IN::A
+        return respond(transaction, resource_class, nil, BLOCK_TTL) if resource_class == Resolv::DNS::Resource::IN::AAAA
         return transaction.fail!(:NXDomain)
       end
       return transaction.fail!(decision[0]) if decision[0] != :Service_Error
@@ -378,7 +384,7 @@ module Eblocker::Dns
       blocked = response[0] == 'OK'
       return nil if !blocked
       return [:NXDomain, response[3]]  if response.size < 7
-      return [response[6], response[3]].to_sym if response[6][0] == ':'
+      return [response[6].to_sym, response[3]] if response[6][0] == ':'
       return [response[6], response[3]]
     end
 
