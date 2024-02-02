@@ -18,7 +18,7 @@ Build a Debian package:
 
 In addition to normal usage via UDP port 5300 the resolver can be accessed internally via Redis.
 
-Send a request to the queue `dn_query`, e.g.:
+Send a request to the queue `dns_query`, e.g.:
 
     # redis-cli lpush dns_query 5,192.168.1.1,A:eblocker.org
     (integer) 1
