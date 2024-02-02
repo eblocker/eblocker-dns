@@ -17,6 +17,7 @@
 require 'async/dns'
 require 'async/dns/system'
 require 'eblocker/dns/cache'
+require 'eblocker/dns/utils'
 require 'json'
 require 'redis'
 require 'set'
@@ -290,13 +291,18 @@ module Eblocker::Dns
           resource_class = split[0]
           name = split[1]
         end
-        response = resolver.query(name, resource_class == 'A' ? Resolv::DNS::Resource::IN::A : Resolv::DNS::Resource::IN::AAAA)
-        if !response
-          ''
-        elsif response.answer && !response.answer.empty?
-          "#{response.rcode},#{resource_class},#{response.answer[0][0]},#{response.answer[0][2].address}"
-        else
-          "#{response.rcode}"
+        begin
+          addresses = resolver.addresses_for(name, resource_class == 'A' ? Resolv::DNS::Resource::IN::A : Resolv::DNS::Resource::IN::AAAA, {retries: 1})
+          addresses = addresses.map{|a| a.to_s}
+          if resource_class == 'A'
+            addresses = Utils.sort_ipv4_local_addresses_first(addresses)
+          else
+            addresses = Utils.sort_ipv6_local_addresses_first(addresses)
+          end
+          "0,#{resource_class},#{name},#{addresses[0]}"
+        rescue Exception => e
+          @logger.warn("Failed to get #{resource_class} address of #{name} from #{name_server}: #{e.message}")
+          Resolv::DNS::RCode::NXDomain.to_s
         end
       end
 
@@ -415,7 +421,7 @@ module Eblocker::Dns
       end
 
       def query(name, resource_class = Resolv::DNS::Resource::IN::A, options = {})
-        key = resource_class.to_s + '::' + name
+        key = resource_class.to_s + '::' + name.to_s
         cached = @cache.get(key) if @cache
         if cached
           @log << [Time.now, 'cache', :valid]
