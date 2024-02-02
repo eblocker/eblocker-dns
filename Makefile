@@ -3,8 +3,13 @@ LOGROTATED = $(DESTDIR)/etc/logrotate.d
 LIMITSD = $(DESTDIR)/etc/security/limits.d
 SYSTEMD = $(DESTDIR)/lib/systemd/system
 
+.PHONY: test
+
 build:
 	bundle package --all
+
+test:
+	rake test
 
 install:
 	mkdir -p $(SYSTEMD)
@@ -25,5 +30,5 @@ install:
 	mkdir -p $(DNS_HOME)/run
 	cp -r vendor $(DNS_HOME)
 
-package:
+package: test
 	dpkg-buildpackage -us -uc
