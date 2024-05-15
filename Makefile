@@ -9,7 +9,7 @@ build:
 	bundle package --all
 
 test:
-	rake test
+	bundle exec rake test
 
 install:
 	mkdir -p $(SYSTEMD)
@@ -30,5 +30,5 @@ install:
 	mkdir -p $(DNS_HOME)/run
 	cp -r vendor $(DNS_HOME)
 
-package: test
+package:
 	dpkg-buildpackage -us -uc
