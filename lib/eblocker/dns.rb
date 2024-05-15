@@ -31,13 +31,11 @@ module Eblocker::Dns
     DEVICE = 'eth0'
 
     def run
-      Async.logger.level = Logger::INFO
-
       Async::Reactor.run do |task|
-        redis_pool = Eblocker::Async::Redis::Pool.new({ :host => '127.0.0.1', :port => '6379'}, Async.logger)
+        redis_pool = Eblocker::Async::Redis::Pool.new({ :host => '127.0.0.1', :port => '6379'}, Console.logger)
 
         server = Server.new([[:udp, '::', 5300]], redis_pool)
-        ConfigChannelListener.new(redis_pool, server, Async.logger).listen
+        ConfigChannelListener.new(redis_pool, server, Console.logger).listen
         server.run
 
         task.async do |t|
@@ -48,7 +46,7 @@ module Eblocker::Dns
                 server.resolve(query[0], query[1], query.drop(2))
               end
             rescue IOError, Redis::BaseConnectionError => e
-              Async.logger.warn "blocking pop failed: #{e.message}"
+              Console.logger.warn "blocking pop failed: #{e.message}"
               t.sleep(10)
             end
           end

@@ -32,3 +32,20 @@ Receive the response from queue `dns_response:REQID`, where REQID is the ID used
 
     # redis-cli lpop dns_response:5
     "{\"responses\":[\"0,A,eblocker.org,174.138.100.168\"],\"log\":[\"1706868661.5324538,192.168.1.1,valid,0.042659066\"]}"
+
+## Debug logging
+
+Edit the log level in `/lib/systemd/system/eblocker-dns.service`:
+
+    [Service]
+    ...
+    Environment="CONSOLE_LEVEL=debug"
+
+Reload units:
+
+    systemctl daemon-reload
+
+Restart the DNS server:
+
+    systemctl stop eblocker-dns
+    systemctl start eblocker-dns

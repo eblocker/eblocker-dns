@@ -14,6 +14,9 @@ User=eblocker-dns
 Group=eblocker-dns
 WorkingDirectory=/opt/eblocker-dns
 LimitNOFILE=10000
+Environment="CONSOLE_FORMAT=TEXT"
+Environment="CONSOLE_OUTPUT=Terminal"
+Environment="CONSOLE_LEVEL=info"
 
 [Install]
 WantedBy=multi-user.target
