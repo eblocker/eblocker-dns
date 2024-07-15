@@ -413,7 +413,7 @@ module Eblocker::Dns
       attr_reader :counter
 
       def initialize(nameservers, options, cache)
-        super(nameservers, { timeout: 3 })
+        super(nameservers, timeout: 3)
         @nameservers = nameservers
         @cache = cache
         @log = []
